@@ -1,0 +1,22 @@
+[
+  {
+    "cpf": "12345678909",
+    "nome": "Ana Silva",
+    "numero_celular": "48991234567"
+  },
+  {
+    "cpf": "98765432100",
+    "nome": "Bruno Costa",
+    "numero_celular": "48992345678"
+  },
+  {
+    "cpf": "11144477735",
+    "nome": "Carla Souza",
+    "numero_celular": "48993456789"
+  },
+  {
+    "cpf": "52998224725",
+    "nome": "Daniel Pereira",
+    "numero_celular": "48994567890"
+  }
+]
