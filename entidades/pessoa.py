@@ -1,12 +1,27 @@
-class Pessoa(): 
+from abc import ABC, abstractmethod
 
-    def __init__(cpf: str, nome: str):
-        self.__cpf = cpf
+
+class Pessoa(ABC):
+
+    @abstractmethod
+    def __init__(self, nome: str, cpf: str):
         self.__nome = nome
+        self.__cpf = cpf
 
-    def get_nome():
+    @property
+    def nome(self):
         return self.__nome
 
-    def get_cpf():
+    @nome.setter
+    def nome(self, nome: str):
+        if isinstance(nome, str):
+            self.__nome = nome
+
+    @property
+    def cpf(self):
         return self.__cpf
-    
+
+    @cpf.setter
+    def cpf(self, cpf: str):
+        if isinstance(cpf, str):
+            self.__cpf = cpf
