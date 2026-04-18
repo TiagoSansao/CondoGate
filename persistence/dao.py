@@ -43,7 +43,6 @@ class DAO(ABC):
         for entity in self.__cache:
             if getattr(entity, self.__identifier) == key:
                 return entity
-
         return None
 
     def remove(self, key):
