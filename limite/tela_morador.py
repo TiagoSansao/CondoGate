@@ -62,6 +62,20 @@ class TelaMorador(AbstractTela):
                 "isRequired": True,
                 "dataType": InputDataType.TELEFONE,
                 "parseAs": str
+            }, {
+                "label": "Nº Apartamento",
+                "key": "numero_apartamento",
+                "tooltip": "Número do apartamento (ex: 101)",
+                "isRequired": True,
+                "dataType": InputDataType.NUMERO,
+                "parseAs": int
+            }, {
+                "label": "Bloco (A-D)",
+                "key": "bloco",
+                "tooltip": "Bloco do apartamento (A, B, C ou D)",
+                "isRequired": True,
+                "dataType": InputDataType.TEXTO,
+                "parseAs": str
             }]
         }
 
@@ -82,6 +96,7 @@ class TelaMorador(AbstractTela):
         string_dados += "Nome do morador: " + str(dados["nome"]) + "\n"
         string_dados += "CPF do morador: " + str(dados["cpf"]) + "\n"
         string_dados += "Celular do morador: " + str(dados["numero_celular"]) + "\n"
+        string_dados += "Residência: " + str(dados["residencia"]) + "\n"
         string_dados += '\n'
 
         return string_dados

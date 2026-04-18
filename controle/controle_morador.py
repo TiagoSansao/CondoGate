@@ -27,7 +27,8 @@ class ControladorMorador():
             if self.__morador_dao.get(dados_morador["cpf"]):
                 raise JahExistenteException("Morador", "CPF", dados_morador["cpf"])
 
-            novo_morador = Morador(dados_morador["nome"], dados_morador["cpf"], dados_morador["numero_celular"])
+            novo_morador = Morador(dados_morador["nome"], dados_morador["cpf"], dados_morador["numero_celular"],
+                                   dados_morador["numero_apartamento"], dados_morador["bloco"].upper())
             self.__morador_dao.add(novo_morador)
             self.__tela_morador.mostra_mensagem("Morador adicionado com sucesso!")
         except JahExistenteException as e:
@@ -61,7 +62,8 @@ class ControladorMorador():
             lista_dados = list(map(lambda m: {
                 "nome": m.nome,
                 "cpf": m.cpf,
-                "numero_celular": m.numero_celular
+                "numero_celular": m.numero_celular,
+                "residencia": m.pegar_residencia()
             }, lista_moradores))
 
             self.__tela_morador.mostrar_moradores(lista_dados)
@@ -90,6 +92,7 @@ class ControladorMorador():
 
             morador.nome = dados_morador["nome"]
             morador.numero_celular = dados_morador["numero_celular"]
+            morador.mudar_residencia(dados_morador["numero_apartamento"], dados_morador["bloco"].upper())
             self.__morador_dao.update(morador)
             self.__tela_morador.mostra_mensagem("Alterado com sucesso.")
         except NaoEncontradoException as e:
