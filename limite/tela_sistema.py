@@ -13,8 +13,9 @@ class TelaSistema(AbstractTela):
         button, _ = self.__window.Read()
 
         opcoes = {
-            'Gerenciar Vagas': 2,
             'Gerenciar Moradores': 1,
+            'Gerenciar Vagas': 2,
+            'Gerenciar Espaços': 3,
             'Finalizar sistema': 0,
             None: 0,
             'Cancelar': 0,
@@ -32,6 +33,7 @@ class TelaSistema(AbstractTela):
                   [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
                   [sg.Button('Gerenciar Moradores')],
                   [sg.Button('Gerenciar Vagas')],
+                  [sg.Button('Gerenciar Espaços')],
                   [sg.Button('Finalizar sistema')]]
 
         self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
