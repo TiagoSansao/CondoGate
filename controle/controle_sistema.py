@@ -1,4 +1,5 @@
 from controle.controle_morador import ControladorMorador
+from controle.controle_reserva import ControladorReserva
 from controle.controle_vaga import ControladorVaga
 from controle.controle_espaco import ControladorEspaco
 from limite.tela_sistema import TelaSistema
@@ -12,6 +13,7 @@ class ControladorSistema():
         self.__controlador_morador = ControladorMorador(self)
         self.__controlador_vaga = ControladorVaga(self)
         self.__controlador_espaco = ControladorEspaco(self)
+        self.__controlador_reserva = ControladorReserva(self)
 
     def __new__(cls):
         if ControladorSistema.__instance is None:
@@ -30,6 +32,10 @@ class ControladorSistema():
     def controlador_espaco(self):
         return self.__controlador_espaco
 
+    @property
+    def controlador_reserva(self):
+        return self.__controlador_reserva
+
     def inicializar_sistema(self):
         self.abre_tela()
 
@@ -42,6 +48,9 @@ class ControladorSistema():
     def abre_tela_espaco(self):
         self.controlador_espaco.abre_tela()
 
+    def abre_tela_reserva(self):
+        self.controlador_reserva.abre_tela()
+
     def encerrar_sistema(self):
         exit(0)
 
@@ -50,6 +59,7 @@ class ControladorSistema():
             1: self.abre_tela_morador,
             2: self.abre_tela_vaga,
             3: self.abre_tela_espaco,
+            4: self.abre_tela_reserva,
             0: self.encerrar_sistema
         }
 

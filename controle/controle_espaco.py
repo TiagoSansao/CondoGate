@@ -19,6 +19,10 @@ class ControladorEspaco:
     def controlador_sistema(self):
         return self.__controlador_sistema
 
+    @property
+    def espaco_dao(self):
+        return self.__espaco_dao
+
     def criar_espaco(self):
         dados_espaco = self.__tela_espaco.pega_dados_espaco()
 
