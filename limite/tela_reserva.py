@@ -92,7 +92,6 @@ class TelaReserva(AbstractTela):
     def mostrar(self, dados):
         string_dados = ''
         string_dados += 'Data da reserva: ' + str(dados['data']) + '\n'
-        string_dados += 'Status da reserva: ' + str(dados['status']) + '\n'
         string_dados += 'Espaco: ' + str(dados['espaco']) + '\n'
         string_dados += 'Morador: ' + str(dados['morador']) + ' - CPF ' + str(dados['cpf']) + '\n'
         string_dados += '\n'

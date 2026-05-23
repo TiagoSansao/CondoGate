@@ -3,13 +3,11 @@ from datetime import date
 
 from entidades.espaco import Espaco
 from entidades.morador import Morador
-from entidades.status import Status
 
 
 class Reserva:
-    def __init__(self, data: date, status: Status, espaco: Espaco, morador: Morador):
+    def __init__(self, data: date, espaco: Espaco, morador: Morador):
         self.__data = data
-        self.__status = status
         self.__espaco = espaco
         self.__morador = morador
 
@@ -25,15 +23,6 @@ class Reserva:
     def data(self, data: date):
         if isinstance(data, date):
             self.__data = data
-
-    @property
-    def status(self):
-        return self.__status
-
-    @status.setter
-    def status(self, status: Status):
-        if isinstance(status, Status):
-            self.__status = status
 
     @property
     def espaco(self):
@@ -55,9 +44,3 @@ class Reserva:
 
     def get_data(self):
         return self.__data
-
-    def set_status(self, status: Status):
-        self.status = status
-
-    def cancelar_reserva(self):
-        self.__status = Status.CANCELADA

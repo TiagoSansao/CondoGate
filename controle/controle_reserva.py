@@ -2,7 +2,6 @@ from excecoes.jah_existente_exception import JahExistenteException
 from excecoes.lista_vazia_exception import ListaVaziaException
 from excecoes.nao_encontrado_exception import NaoEncontradoException
 from entidades.reserva import Reserva
-from entidades.status import Status
 from limite.tela_reserva import TelaReserva
 from persistence.reserva_dao import ReservaDAO
 
@@ -32,7 +31,7 @@ class ControladorReserva:
             if espaco is None:
                 raise NaoEncontradoException('Espaco', 'nome', dados_reserva['espaco'])
 
-            nova_reserva = Reserva(dados_reserva['data'], Status.CONFIRMADA, espaco, morador)
+            nova_reserva = Reserva(dados_reserva['data'], espaco, morador)
 
             reserva_conflitante = self.__reserva_dao.get(nova_reserva.chave)
 
@@ -54,7 +53,6 @@ class ControladorReserva:
 
             lista_dados = list(map(lambda r: {
                 'data': r.data.strftime('%d-%m-%Y'),
-                'status': r.status.value,
                 'espaco': r.espaco.nome,
                 'morador': r.morador.nome,
                 'cpf': r.morador.cpf
@@ -82,9 +80,8 @@ class ControladorReserva:
             if reserva is None:
                 raise NaoEncontradoException('Reserva', 'espaço e data', chave)
 
-            reserva.status = Status.CANCELADA
-            self.__reserva_dao.update(reserva)
-            self.__tela_reserva.mostra_mensagem('Reserva cancelada com sucesso!', 'sucesso')
+            self.__reserva_dao.remove(chave)
+            self.__tela_reserva.mostra_mensagem('Reserva removida com sucesso!', 'sucesso')
         except NaoEncontradoException as e:
             self.__tela_reserva.mostra_mensagem(str(e), 'erro')
         except Exception as e:
