@@ -16,6 +16,7 @@ class TelaSistema(AbstractTela):
             'Gerenciar Moradores': 1,
             'Gerenciar Vagas': 2,
             'Gerenciar Espaços': 3,
+            'Gerenciar Reservas': 4,
             'Finalizar sistema': 0,
             None: 0,
             'Cancelar': 0,
@@ -34,6 +35,7 @@ class TelaSistema(AbstractTela):
                   [sg.Button('Gerenciar Moradores')],
                   [sg.Button('Gerenciar Vagas')],
                   [sg.Button('Gerenciar Espaços')],
+                  [sg.Button('Gerenciar Reservas')],
                   [sg.Button('Finalizar sistema')]]
 
         self.__window = sg.Window(self.TITULO_BASE).Layout(layout)

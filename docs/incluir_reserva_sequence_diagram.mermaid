@@ -1,0 +1,38 @@
+sequenceDiagram
+    actor Funcionário
+    participant Tela as TelaReserva
+    participant CtrlRes as ControladorReserva
+    participant CtrlMor as ControladorMorador
+    participant CtrlEsp as ControladorEspaco
+    participant ResDAO as ReservaDAO
+    participant Reserva as Reserva
+
+    Funcionário->>Tela: Click "Incluir Reserva"
+    Tela->>CtrlRes: abre_tela() option 1
+    CtrlRes->>Tela: pega_dados_reserva()
+    Funcionário->>Tela: Enter cpf, espaco, data
+    Tela-->>CtrlRes: dados_reserva
+
+    CtrlRes->>CtrlMor: morador = morador_dao.get(dados_reserva['cpf'])
+    CtrlMor-->>CtrlRes: morador
+    alt morador is None
+        CtrlRes->>Tela: mostra_mensagem(str(NaoEncontradoException))
+    else morador is not None
+        CtrlRes->>CtrlEsp: espaco = espaco_dao.get(dados_reserva['espaco'])
+        CtrlEsp-->>CtrlRes: espaco
+        alt espaco is None
+            CtrlRes->>Tela: mostra_mensagem(str(NaoEncontradoException))
+        else espaco is not None
+            CtrlRes->>Reserva: nova_reserva = Reserva(dados_reserva['data'], Status.CONFIRMADA, espaco, morador)
+            Reserva-->>CtrlRes: nova_reserva.chave
+            CtrlRes->>ResDAO: reserva_conflitante = self.__reserva_dao.get(nova_reserva.chave)
+            ResDAO-->>CtrlRes: reserva_conflitante
+            alt reserva_conflitante
+                CtrlRes->>Tela: mostra_mensagem(str(JahExistenteException))
+            else not reserva_conflitante
+                CtrlRes->>ResDAO: self.__reserva_dao.add(nova_reserva)
+                ResDAO-->>CtrlRes: persisted
+                CtrlRes->>Tela: mostra_mensagem('Reserva realizada com sucesso!')
+            end
+        end
+    end

@@ -1,17 +1,21 @@
 
-from datetime import date, time
+from datetime import date
 
+from entidades.espaco import Espaco
+from entidades.morador import Morador
 from entidades.status import Status
-from entidade.espaco import Espaco
 
 
 class Reserva:
-    def __init__(self, data: date, hora_inicio: time, hora_fim: time, status: Status, espaco: Espaco):
+    def __init__(self, data: date, status: Status, espaco: Espaco, morador: Morador):
         self.__data = data
-        self.__hora_inicio = hora_inicio
-        self.__hora_fim = hora_fim
         self.__status = status
         self.__espaco = espaco
+        self.__morador = morador
+
+    @property
+    def chave(self):
+        return f'{self.__espaco.nome}|{self.__data.isoformat()}'
 
     @property
     def data(self):
@@ -21,24 +25,6 @@ class Reserva:
     def data(self, data: date):
         if isinstance(data, date):
             self.__data = data
-
-    @property
-    def hora_inicio(self):
-        return self.__hora_inicio
-
-    @hora_inicio.setter
-    def hora_inicio(self, hora_inicio: time):
-        if isinstance(hora_inicio, time):
-            self.__hora_inicio = hora_inicio
-
-    @property
-    def hora_fim(self):
-        return self.__hora_fim
-
-    @hora_fim.setter
-    def hora_fim(self, hora_fim: time):
-        if isinstance(hora_fim, time):
-            self.__hora_fim = hora_fim
 
     @property
     def status(self):
@@ -55,16 +41,20 @@ class Reserva:
 
     @espaco.setter
     def espaco(self, espaco: "Espaco"):
-        self.__espaco = espaco
+        if isinstance(espaco, Espaco):
+            self.__espaco = espaco
+
+    @property
+    def morador(self):
+        return self.__morador
+
+    @morador.setter
+    def morador(self, morador: Morador):
+        if isinstance(morador, Morador):
+            self.__morador = morador
 
     def get_data(self):
         return self.__data
-
-    def get_hora_inicio(self):
-        return self.__hora_inicio
-
-    def get_hora_fim(self):
-        return self.__hora_fim
 
     def set_status(self, status: Status):
         self.status = status
