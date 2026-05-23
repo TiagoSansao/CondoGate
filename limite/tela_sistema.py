@@ -13,12 +13,12 @@ class TelaSistema(AbstractTela):
         button, _ = self.__window.Read()
 
         opcoes = {
+            'Gerenciar Vagas': 2,
             'Gerenciar Moradores': 1,
             'Finalizar sistema': 0,
             None: 0,
             'Cancelar': 0,
         }
-
         opcao = opcoes.get(button, 0)
         self.close()
         return opcao
@@ -27,10 +27,11 @@ class TelaSistema(AbstractTela):
         self.__window.Close()
 
     def init_opcoes(self):
-        sg.ChangeLookAndFeel(self.ESTILO_JANELA)
+        sg.theme(self.ESTILO_JANELA)
         layout = [[sg.Text('Bem vindo ao CondoGate', font=("Helvetica", 25))],
                   [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
                   [sg.Button('Gerenciar Moradores')],
+                  [sg.Button('Gerenciar Vagas')],
                   [sg.Button('Finalizar sistema')]]
 
         self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
