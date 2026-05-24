@@ -15,6 +15,10 @@ class ControladorVaga:
     def controlador_sistema(self):
         return self.__controlador_sistema
     
+    @property
+    def vaga_dao(self):
+        return self.__vaga_dao
+    
     def criar_vaga(self):
         dados_vaga = self.__tela_vaga.pega_dados_vagas()
         if dados_vaga is None:
