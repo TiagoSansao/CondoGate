@@ -39,6 +39,37 @@ class TelaVisita(AbstractTela):
             'vaga': values['vaga']
         }
 
+    def pega_tempo_limite(self):
+        sg.theme(self.ESTILO_JANELA)
+
+        layout = [
+            [sg.Text('Configurar Tempo Limite de Visita', font=("Helvetica", 16))],
+            [sg.Text('Tempo limite (minutos):'), sg.InputText(default_text='10', key='tempo', size=(10, 1))],
+            [sg.Button('Confirmar'), sg.Button('Cancelar')]
+        ]
+
+        window = sg.Window('Configurar Tempo Limite').Layout(layout)
+        button, values = window.Read()
+        window.Close()
+
+        if button in (None, 'Cancelar'):
+            return None
+
+        try:
+            tempo = int(values['tempo'])
+            if tempo <= 0:
+                raise ValueError
+            return {'tempo': tempo}
+        except (ValueError, TypeError):
+            sg.popup('Tempo limite deve ser um numero inteiro positivo.', title='Erro')
+            return None
+
+    def notificar_visitas_excedidas(self, visitas_info):
+        msg = 'As seguintes visitas excederam o tempo limite:\n\n'
+        for info in visitas_info:
+            msg += f"- {info['nome']} (CPF: {info['cpf']}) - {info['tempo_excedido']} min excedidos\n"
+        sg.popup(msg, title='Tempo de Visita Excedido', keep_on_top=True)
+
     def mostra_mensagem(self, msg, tipo="info"):
         sg.popup(msg, title=tipo.capitalize())
 

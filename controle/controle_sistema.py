@@ -4,7 +4,9 @@ from controle.controle_vaga import ControladorVaga
 from controle.controle_espaco import ControladorEspaco
 from controle.controle_visita import ControladorVisita
 from controle.controle_visitante import ControladorVisitante
+from controle.agendador_visitas import AgendadorVisitas
 from limite.tela_sistema import TelaSistema
+from queue import Empty, Queue
 
 
 class ControladorSistema():
@@ -18,6 +20,11 @@ class ControladorSistema():
         self.__controlador_espaco = ControladorEspaco(self)
         self.__controlador_reserva = ControladorReserva(self)
         self.__controlador_visitante = ControladorVisitante(self)
+        self.__fila_notificacoes_visitas = Queue()
+        self.__agendador_visitas = AgendadorVisitas(
+            self.__controlador_visita.listar_visitas_excedidas,
+            self.__enfileirar_visitas_excedidas
+        )
 
     def __new__(cls):
         if ControladorSistema.__instance is None:
@@ -49,7 +56,20 @@ class ControladorSistema():
         return self.__controlador_visitante
 
     def inicializar_sistema(self):
+        self.__agendador_visitas.iniciar()
         self.abre_tela()
+
+    def __enfileirar_visitas_excedidas(self, visitas_excedidas):
+        self.__fila_notificacoes_visitas.put(visitas_excedidas)
+
+    def __processar_notificacoes_pendentes(self):
+        while True:
+            try:
+                notificacao = self.__fila_notificacoes_visitas.get_nowait()
+            except Empty:
+                break
+
+            self.__controlador_visita.notificar_visitas_excedidas(notificacao)
 
     def abre_tela_morador(self):
         self.controlador_morador.abre_tela()
@@ -66,7 +86,11 @@ class ControladorSistema():
     def abre_tela_visita(self):
         self.controlador_visita.abre_tela()
 
+    def abre_tela_notificacao(self):
+        self.controlador_visita.configurar_notificacao()
+
     def encerrar_sistema(self):
+        self.__agendador_visitas.parar()
         exit(0)
 
     def abre_tela(self):
@@ -76,10 +100,14 @@ class ControladorSistema():
             3: self.abre_tela_vaga,
             4: self.abre_tela_espaco,
             5: self.abre_tela_reserva,
+            6: self.abre_tela_notificacao,
             0: self.encerrar_sistema
         }
 
         while True:
-            opcao_selecionada = self.__tela_sistema.tela_opcoes()
+            opcao_selecionada = self.__tela_sistema.tela_opcoes(
+                on_idle=self.__processar_notificacoes_pendentes
+            )
+            self.__processar_notificacoes_pendentes()
             funcao_selecionada = lista_opcoes[int(opcao_selecionada)]
             funcao_selecionada()
