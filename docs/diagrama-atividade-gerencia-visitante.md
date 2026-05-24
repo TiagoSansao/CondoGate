@@ -1,5 +1,3 @@
-# Diagrama de Atividade - Gerenciamento de Visitante
-
 ```mermaid
 flowchart TB
     start([Início])

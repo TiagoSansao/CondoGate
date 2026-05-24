@@ -1,5 +1,3 @@
-# Diagrama de Sequência - Gerenciamento de Visitante
-
 ```mermaid
 sequenceDiagram
     participant Usuário
