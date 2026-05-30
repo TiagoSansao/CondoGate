@@ -2,6 +2,8 @@ from controle.controle_morador import ControladorMorador
 from controle.controle_reserva import ControladorReserva
 from controle.controle_vaga import ControladorVaga
 from controle.controle_espaco import ControladorEspaco
+from controle.controle_visita import ControladorVisita
+from controle.controle_visitante import ControladorVisitante
 from limite.tela_sistema import TelaSistema
 
 
@@ -10,15 +12,21 @@ class ControladorSistema():
 
     def __init__(self):
         self.__tela_sistema = TelaSistema()
+        self.__controlador_visita = ControladorVisita(self)
         self.__controlador_morador = ControladorMorador(self)
         self.__controlador_vaga = ControladorVaga(self)
         self.__controlador_espaco = ControladorEspaco(self)
         self.__controlador_reserva = ControladorReserva(self)
+        self.__controlador_visitante = ControladorVisitante(self)
 
     def __new__(cls):
         if ControladorSistema.__instance is None:
             ControladorSistema.__instance = object.__new__(cls)
         return ControladorSistema.__instance
+
+    @property
+    def controlador_visita(self):
+        return self.__controlador_visita
 
     @property
     def controlador_morador(self):
@@ -36,6 +44,10 @@ class ControladorSistema():
     def controlador_reserva(self):
         return self.__controlador_reserva
 
+    @property
+    def controlador_visitante(self):
+        return self.__controlador_visitante
+
     def inicializar_sistema(self):
         self.abre_tela()
 
@@ -51,15 +63,19 @@ class ControladorSistema():
     def abre_tela_reserva(self):
         self.controlador_reserva.abre_tela()
 
+    def abre_tela_visita(self):
+        self.controlador_visita.abre_tela()
+
     def encerrar_sistema(self):
         exit(0)
 
     def abre_tela(self):
         lista_opcoes = {
-            1: self.abre_tela_morador,
-            2: self.abre_tela_vaga,
-            3: self.abre_tela_espaco,
-            4: self.abre_tela_reserva,
+            1: self.abre_tela_visita,
+            2: self.abre_tela_morador,
+            3: self.abre_tela_vaga,
+            4: self.abre_tela_espaco,
+            5: self.abre_tela_reserva,
             0: self.encerrar_sistema
         }
 
