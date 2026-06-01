@@ -2,7 +2,7 @@ from threading import Event, Thread
 
 
 class AgendadorVisitas:
-    def __init__(self, buscar_visitas_excedidas, ao_encontrar_visitas, primeiro_intervalo_segundos=2, intervalo_segundos=600):
+    def __init__(self, buscar_visitas_excedidas, ao_encontrar_visitas, primeiro_intervalo_segundos=2, intervalo_segundos=60):
         self.__buscar_visitas_excedidas = buscar_visitas_excedidas
         self.__ao_encontrar_visitas = ao_encontrar_visitas
         self.__primeiro_intervalo_segundos = primeiro_intervalo_segundos

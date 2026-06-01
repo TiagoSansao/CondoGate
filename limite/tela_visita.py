@@ -39,12 +39,12 @@ class TelaVisita(AbstractTela):
             'vaga': values['vaga']
         }
 
-    def pega_tempo_limite(self):
+    def pega_tempo_limite(self, tempo_atual=10):
         sg.theme(self.ESTILO_JANELA)
 
         layout = [
             [sg.Text('Configurar Tempo Limite de Visita', font=("Helvetica", 16))],
-            [sg.Text('Tempo limite (minutos):'), sg.InputText(default_text='10', key='tempo', size=(10, 1))],
+            [sg.Text('Tempo limite (minutos):'), sg.InputText(default_text=str(tempo_atual), key='tempo', size=(10, 1))],
             [sg.Button('Confirmar'), sg.Button('Cancelar')]
         ]
 

@@ -92,7 +92,7 @@ class ControladorVisita:
             pickle.dump(self.__tempo_limite_minutos, f)
 
     def configurar_notificacao(self):
-        dados = self.__tela_visita.pega_tempo_limite()
+        dados = self.__tela_visita.pega_tempo_limite(self.__tempo_limite_minutos)
 
         if dados is None:
             return
