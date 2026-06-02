@@ -21,6 +21,7 @@ flowchart TB
     mostrarLista[Exibir visitantes]
     selecionarVisitante[Solicitar CPF do visitante a alterar]
     pegarNovosDados[Solicitar novos dados do visitante]
+    verificarCpfAlteracao{Novo CPF é diferente e já existe?}
     atualizarVisitante[Atualizar visitante no DAO]
     excluirVisitante[Remover visitante do DAO]
     fim([Fim do fluxo])
