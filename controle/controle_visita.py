@@ -1,9 +1,12 @@
-from excecoes.lista_vazia_exception import ListaVaziaException
 from excecoes.nao_encontrado_exception import NaoEncontradoException
 from entidades.visita import Visita, StatusVisita
 from limite.tela_visita import TelaVisita
 from persistence.visita_dao import VisitaDAO
 from datetime import datetime
+import pickle
+
+TEMPO_LIMITE_FILE = 'pickle_files/tempo_limite.pkl'
+TEMPO_LIMITE_DEFAULT = 10
 
 
 class ControladorVisita:
@@ -11,6 +14,7 @@ class ControladorVisita:
         self.__controlador_sistema = controlador_sistema
         self.__tela_visita = TelaVisita()
         self.__visita_dao = VisitaDAO()
+        self.__tempo_limite_minutos = self.__carregar_tempo_limite()
 
     @property
     def controlador_sistema(self):
@@ -82,6 +86,52 @@ class ControladorVisita:
 
     def registrar_novo_visitante(self):
         self.__controlador_sistema.controlador_visitante.incluir()
+
+    def __carregar_tempo_limite(self):
+        try:
+            with open(TEMPO_LIMITE_FILE, 'rb') as f:
+                return pickle.load(f)
+        except (FileNotFoundError, EOFError):
+            return TEMPO_LIMITE_DEFAULT
+
+    def __salvar_tempo_limite(self):
+        with open(TEMPO_LIMITE_FILE, 'wb') as f:
+            pickle.dump(self.__tempo_limite_minutos, f)
+
+    def configurar_notificacao(self):
+        dados = self.__tela_visita.pega_tempo_limite(self.__tempo_limite_minutos)
+
+        if dados is None:
+            return
+
+        self.__tempo_limite_minutos = dados['tempo']
+        self.__salvar_tempo_limite()
+        self.__tela_visita.mostra_mensagem(
+            f'Tempo limite atualizado para {self.__tempo_limite_minutos} minutos.',
+            'sucesso'
+        )
+
+    def listar_visitas_excedidas(self):
+        visitas = self.__visita_dao.get_all()
+        agora = datetime.now()
+        visitas_excedidas = []
+
+        for v in visitas:
+            if v.status == StatusVisita.ATIVA:
+                duracao = (agora - v.entrada).total_seconds() / 60
+                if duracao > self.__tempo_limite_minutos:
+                    excedido = int(duracao - self.__tempo_limite_minutos)
+                    visitas_excedidas.append({
+                        'nome': v.visitante.nome,
+                        'cpf': v.visitante.cpf,
+                        'tempo_excedido': excedido
+                    })
+
+        return visitas_excedidas
+
+    def notificar_visitas_excedidas(self, visitas_excedidas):
+        if visitas_excedidas:
+            self.__tela_visita.notificar_visitas_excedidas(visitas_excedidas)
 
     def abre_tela(self):
         self.registrar_visita()
