@@ -13,10 +13,11 @@ class TelaSistema(AbstractTela):
         opcoes = {
             'Registrar Entrada/saída': 1,
             'Gerenciar Moradores': 2,
-            'Gerenciar Vagas': 3,
-            'Gerenciar Espaços': 4,
-            'Gerenciar Reservas': 5,
-            'Notificar Tempo Excedido': 6,
+            'Gerenciar Visitantes': 3,
+            'Gerenciar Vagas': 4,
+            'Gerenciar Espaços': 5,
+            'Gerenciar Reservas': 6,
+            'Notificar Tempo Excedido': 7,
             'Finalizar Sistema': 0,
             None: 0,
             'Cancelar': 0,
@@ -42,12 +43,13 @@ class TelaSistema(AbstractTela):
         sg.theme(self.ESTILO_JANELA)
         layout = [[sg.Text('Bem vindo ao CondoGate', font=("Helvetica", 25))],
                   [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Registrar Entrada/saída')],
-                  [sg.Button('Gerenciar Moradores')],
-                  [sg.Button('Gerenciar Vagas')],
-                  [sg.Button('Gerenciar Espaços')],
-                  [sg.Button('Gerenciar Reservas')],
-                  [sg.Button('Notificar Tempo Excedido')],
-                  [sg.Button('Finalizar Sistema')]]
+                  [sg.Button('Registrar Entrada/saída')], # 1
+                  [sg.Button('Gerenciar Moradores')], # 2
+                  [sg.Button('Gerenciar Visitantes')], # 3
+                  [sg.Button('Gerenciar Vagas')], # 4
+                  [sg.Button('Gerenciar Espaços')], # 5
+                  [sg.Button('Gerenciar Reservas')], # 6
+                  [sg.Button('Notificar Tempo Excedido')], # 7
+                  [sg.Button('Finalizar Sistema')]] # 0
 
         self.__window = sg.Window(self.TITULO_BASE).Layout(layout)

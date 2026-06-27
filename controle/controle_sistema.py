@@ -89,6 +89,9 @@ class ControladorSistema():
     def abre_tela_notificacao(self):
         self.controlador_visita.configurar_notificacao()
 
+    def abre_tela_visitante(self):
+        self.controlador_visitante.abre_tela()
+
     def encerrar_sistema(self):
         self.__agendador_visitas.parar()
         exit(0)
@@ -97,10 +100,11 @@ class ControladorSistema():
         lista_opcoes = {
             1: self.abre_tela_visita,
             2: self.abre_tela_morador,
-            3: self.abre_tela_vaga,
-            4: self.abre_tela_espaco,
-            5: self.abre_tela_reserva,
-            6: self.abre_tela_notificacao,
+            3: self.abre_tela_visitante,
+            4: self.abre_tela_vaga,
+            5: self.abre_tela_espaco,
+            6: self.abre_tela_reserva,
+            7: self.abre_tela_notificacao,
             0: self.encerrar_sistema
         }
 
