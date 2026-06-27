@@ -44,7 +44,10 @@ class ControladorVisita:
             if visita_ativa:
                 visita_ativa.registrar_saida()
                 
-                self.__visita_dao.update(visita_ativa) 
+                self.__visita_dao.update(visita_ativa)
+                
+                if visita_ativa.vaga:
+                    self.__controlador_sistema.controlador_vaga.vaga_dao.update(visita_ativa.vaga)
                 
                 self.__tela_visita.mostra_mensagem('Saída registrada com sucesso! Campo de vaga desconsiderado.', 'sucesso')
             else:
@@ -59,7 +62,11 @@ class ControladorVisita:
                     if vaga_obj is None:
                         raise NaoEncontradoException('Vaga', 'ID', id_vaga)
                     
+                    if vaga_obj.status:
+                        raise Exception('Vaga já está ocupada')
+                    
                     vaga_obj.status = True
+                    self.__controlador_sistema.controlador_vaga.vaga_dao.update(vaga_obj)
 
                 nova_visita = Visita(visitante, datetime.now(), vaga_obj)
                 self.__visita_dao.add(nova_visita)
