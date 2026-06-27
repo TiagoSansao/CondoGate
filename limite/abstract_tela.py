@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import List, Tuple
 import datetime
 import FreeSimpleGUI as sg
 
@@ -85,7 +86,7 @@ class AbstractTela(ABC):
                 "erro")
             return False
 
-    def _validar_campos(self, values: dict, regras: list[tuple]) -> bool:
+    def _validar_campos(self, values: dict, regras: List[Tuple]) -> bool:
         for tipo, chave, campo_legivel in regras:
             if tipo.lower() == "obrigatorio" and not self.__validar_input_obrigatorio(values, chave, campo_legivel):
                 return False
