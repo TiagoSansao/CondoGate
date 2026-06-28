@@ -1,6 +1,5 @@
 ```mermaid
 sequenceDiagram
-    %% Alterado de participant para actor
     actor Usuário
     participant TelaVisitante
     participant ControladorVisitante
