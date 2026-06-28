@@ -1,4 +1,4 @@
-mermaid
+```mermaid
 flowchart TB
 
     start([Início])
@@ -111,3 +111,4 @@ flowchart TB
     %% =======================
 
     mostrarErro --> abrirMenu
+```
