@@ -1,33 +1,31 @@
 ```mermaid
-flowchart TB
+flowchart LR
 
     start([Início])
+    fim([Fim])
 
     %% =======================
-    %% PAPÉIS (swimlanes simples via subgraph)
+    %% PAPÉIS (Organizados em colunas horizontais)
     %% =======================
 
-    subgraph Usuario[Usuário]
+    subgraph Usuario[Visitante / Usuário]
         escolherAcao{Selecionar ação}
         selecionarVisitante["Selecionar visitante (CPF)"]
         pegarNovosDados[Informar novos dados]
-    
+        
         selecionarVisitante --> pegarNovosDados
     end
 
     subgraph Sistema[Sistema]
         abrirMenu[Exibir menu de visitante]
-
         incluir[Incluir visitante]
         listar[Listar visitantes]
         alterar[Alterar visitante]
         remover[Remover visitante]
 
         inicioValidar[Validar entrada de dados]
-
         verificarCpfExistente{CPF já existe?}
         verificarCpfAlteracao{Novo CPF já existe?}
-
         buscarMorador[Buscar morador responsável]
         moradorExiste{Morador existe?}
 
@@ -50,8 +48,6 @@ flowchart TB
         daoExcluir[(Excluir registro)]
         daoListar[(Listar registros)]
     end
-
-    fim([Fim])
 
     %% =======================
     %% FLUXO PRINCIPAL
