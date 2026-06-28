@@ -56,7 +56,7 @@ flowchart TB
 
     start --> abrirMenu --> escolherAcao
 
-    escolherAcao -->|Incluir| incluir
+    escolherAcao --> incluir: [Incluir]
 
     escolherAcao -->|Listar| listar
 
@@ -70,9 +70,9 @@ flowchart TB
 
     incluir --> inicioValidar --> verificarCpfExistente
 
-    verificarCpfExistente -->|Sim| mostrarErro
+    verificarCpfExistente --> mostrarErro: [Sim]
 
-    verificarCpfExistente -->|Não| buscarMorador
+    verificarCpfExistente --> buscarMorador: [Não]
 
     buscarMorador --> moradorExiste
 
