@@ -8,7 +8,7 @@ flowchart TB
         pegarNovosDados[Solicitar novos dados do visitante]
     end
 
-    subgraph Sistema [Sistema / Modulo Visitante]
+    subgraph Sistema [Sistema / Módulo Visitante]
         abrirMenu[Mostrar menu de visitante]
         incluir[Iniciar Incluir Visitante]
         listar[Iniciar Listar Visitantes]
@@ -32,7 +32,7 @@ flowchart TB
         fim([Fim do fluxo])
     end
 
-    %% Fluxo Principal e Decisões com Notação Correta [Guardas]
+    %% Fluxo Principal e Decisões com Notação de Colchetes [Guardas]
     start --> abrirMenu --> escolherAcao
     
     escolherAcao -->|"[Incluir]"| incluir
