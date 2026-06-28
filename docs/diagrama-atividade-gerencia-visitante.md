@@ -11,6 +11,8 @@ flowchart TB
         escolherAcao{Selecionar ação}
         selecionarVisitante[Selecionar visitante (CPF)]
         pegarNovosDados[Informar novos dados]
+    
+        selecionarVisitante --> pegarNovosDados
     end
 
     subgraph Sistema[Sistema]
