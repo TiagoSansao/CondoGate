@@ -7,7 +7,7 @@ flowchart TB
     %% PAPÉIS (swimlanes simples via subgraph)
     %% =======================
 
-    subgraph Usuario[Visitante / Usuário]
+    subgraph Usuario[Usuário]
         escolherAcao{Selecionar ação}
         selecionarVisitante["Selecionar visitante (CPF)"]
         pegarNovosDados[Informar novos dados]
