@@ -1,75 +1,76 @@
 ```mermaid
 sequenceDiagram
-    participant Usuário
+    %% Alterado de participant para actor
+    actor Usuário
     participant TelaVisitante
     participant ControladorVisitante
     participant MoradorDAO
     participant VisitanteDAO
 
-    Usuário->>TelaVisitante: abre menu de visitante
-    TelaVisitante->>Usuário: exibe opções
+    Usuário->>TelaVisitante: abrirMenuVisitante()
+    TelaVisitante->>Usuário: exibirOpcoes()
 
     alt Incluir visitante
-        Usuário->>TelaVisitante: envia nome, CPF, CPF do morador responsável
-        TelaVisitante->>ControladorVisitante: incluir()
-        ControladorVisitante->>VisitanteDAO: get(cpf visitante)
+        Usuário->>TelaVisitante: informarDadosCadastro(nome, cpf, cpfMorador)
+        TelaVisitante->>ControladorVisitante: incluir(nome, cpf, cpfMorador)
+        ControladorVisitante->>VisitanteDAO: get(cpf)
         alt visitante não existe
-            ControladorVisitante->>MoradorDAO: get(cpf morador)
+            ControladorVisitante->>MoradorDAO: get(cpfMorador)
             alt morador existe
-                ControladorVisitante->>VisitanteDAO: add(novo Visitante)
-                ControladorVisitante->>TelaVisitante: mostra mensagem de sucesso
+                ControladorVisitante->>VisitanteDAO: add(novoVisitante)
+                ControladorVisitante->>TelaVisitante: exibirMensagemSucesso()
             else morador não encontrado
-                ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+                ControladorVisitante->>TelaVisitante: exibirMensagemErro()
             end
         else visitante já existe
-            ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+            ControladorVisitante->>TelaVisitante: exibirMensagemErro()
         end
     else Listar visitantes
-        Usuário->>TelaVisitante: solicita listagem
+        Usuário->>TelaVisitante: solicitarListagem()
         TelaVisitante->>ControladorVisitante: listar()
-        ControladorVisitante->>VisitanteDAO: get_all()
+        ControladorVisitante->>VisitanteDAO: getAll()
         alt lista não vazia
-            ControladorVisitante->>TelaVisitante: mostrar lista de visitantes
+            ControladorVisitante->>TelaVisitante: exibirListaVisitantes(lista)
         else lista vazia
-            ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+            ControladorVisitante->>TelaVisitante: exibirMensagemErro()
         end
     else Alterar visitante
-        Usuário->>TelaVisitante: solicita alteração
-        TelaVisitante->>ControladorVisitante: alterar()
-        ControladorVisitante->>VisitanteDAO: get_all()  
-        ControladorVisitante->>TelaVisitante: pede CPF do visitante a alterar
-        Usuário->>TelaVisitante: informa CPF atual
-        TelaVisitante->>ControladorVisitante: pega novos dados
-        ControladorVisitante->>VisitanteDAO: get(cpf atual)
+        Usuário->>TelaVisitante: solicitarAlteracao()
+        TelaVisitante->>ControladorVisitante: iniciarAlteracao()
+        ControladorVisitante->>VisitanteDAO: getAll()  
+        ControladorVisitante->>TelaVisitante: solicitarCpfAlteracao()
+        Usuário->>TelaVisitante: informarCpfAtual(cpf)
+        TelaVisitante->>ControladorVisitante: processarNovosDados(cpf)
+        ControladorVisitante->>VisitanteDAO: get(cpf)
         alt visitante existe
-            ControladorVisitante->>VisitanteDAO: get(novo CPF) if CPF mudou
+            ControladorVisitante->>VisitanteDAO: get(novoCpf)
             alt CPF novo disponível
-                ControladorVisitante->>MoradorDAO: get(cpf morador)
+                ControladorVisitante->>MoradorDAO: get(cpfMorador)
                 alt morador existe
-                    ControladorVisitante->>VisitanteDAO: update(visitação) / remove+add
-                    ControladorVisitante->>TelaVisitante: mostra mensagem de sucesso
+                    ControladorVisitante->>VisitanteDAO: update(visitante)
+                    ControladorVisitante->>TelaVisitante: exibirMensagemSucesso()
                 else morador não encontrado
-                    ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+                    ControladorVisitante->>TelaVisitante: exibirMensagemErro()
                 end
             else CPF já existe
-                ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+                ControladorVisitante->>TelaVisitante: exibirMensagemErro()
             end
         else visitante não encontrado
-            ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+            ControladorVisitante->>TelaVisitante: exibirMensagemErro()
         end
     else Remover visitante
-        Usuário->>TelaVisitante: solicita remoção
-        TelaVisitante->>ControladorVisitante: remover()
-        ControladorVisitante->>VisitanteDAO: get_all()
-        ControladorVisitante->>TelaVisitante: pede CPF do visitante
-        Usuário->>TelaVisitante: informa CPF
-        TelaVisitante->>ControladorVisitante: confirma remoção
+        Usuário->>TelaVisitante: solicitarRemocao()
+        TelaVisitante->>ControladorVisitante: iniciarRemocao()
+        ControladorVisitante->>VisitanteDAO: getAll()
+        ControladorVisitante->>TelaVisitante: solicitarCpfRemocao()
+        Usuário->>TelaVisitante: informarCpfRemocao(cpf)
+        TelaVisitante->>ControladorVisitante: confirmarRemocao(cpf)
         ControladorVisitante->>VisitanteDAO: get(cpf)
         alt visitante existe
             ControladorVisitante->>VisitanteDAO: remove(cpf)
-            ControladorVisitante->>TelaVisitante: mostra mensagem de sucesso
+            ControladorVisitante->>TelaVisitante: exibirMensagemSucesso()
         else visitante não encontrado
-            ControladorVisitante->>TelaVisitante: mostra mensagem de erro
+            ControladorVisitante->>TelaVisitante: exibirMensagemErro()
         end
     end
 ```
