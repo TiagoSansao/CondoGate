@@ -1,118 +1,112 @@
-```mermaid
-
 flowchart TB
 
     start([Início])
 
-    abrirMenu[Mostrar menu de visitante]
+    %% =======================
+    %% PAPÉIS (swimlanes simples via subgraph)
+    %% =======================
 
-    escolherAcao{Selecionar ação}
+    subgraph Usuario[Visitante / Usuário]
+        escolherAcao{Selecionar ação}
+        selecionarVisitante[Selecionar visitante (CPF)]
+        pegarNovosDados[Informar novos dados]
+    end
 
-    incluir[Incluir Visitante]
+    subgraph Sistema[Sistema]
+        abrirMenu[Exibir menu de visitante]
 
-    listar[Listar Visitantes]
+        incluir[Incluir visitante]
+        listar[Listar visitantes]
+        alterar[Alterar visitante]
+        remover[Remover visitante]
 
-    alterar[Alterar Visitante]
+        inicioValidar[Validar entrada de dados]
 
-    remover[Remover Visitante]
+        verificarCpfExistente{CPF já existe?}
+        verificarCpfAlteracao{Novo CPF já existe?}
 
-    retornar[Retornar ao menu principal]
+        buscarMorador[Buscar morador responsável]
+        moradorExiste{Morador existe?}
 
+        criarVisitante[Criar e salvar visitante]
+        atualizarVisitante[Atualizar visitante]
+        excluirVisitante[Remover visitante]
 
+        listarDados[Obter lista de visitantes]
+        listaVazia{Lista vazia?}
 
-    inicioValidar[Validar entrada de dados]
+        mostrarLista[Exibir lista]
+        mostrarSucesso[Exibir sucesso]
+        mostrarErro[Exibir erro]
+    end
 
-    verificarCpfExistente{CPF visitante já existe?}
+    subgraph DAO[Banco de Dados / DAO]
+        daoBuscarMorador[(Consultar morador)]
+        daoSalvar[(Persistir visitante)]
+        daoAtualizar[(Atualizar registro)]
+        daoExcluir[(Excluir registro)]
+        daoListar[(Listar registros)]
+    end
 
-    buscarMorador[Buscar morador responsável por CPF]
+    fim([Fim])
 
-    moradorExiste{Morador responsável existe?}
-
-    criarVisitante[Criar e salvar visitante]
-
-    mostrarSucesso[Mostrar mensagem de sucesso]
-
-    mostrarErro[Mostrar mensagem de erro]
-
-    listarDados[Obter lista de visitantes]
-
-    listaVazia{Lista vazia?}
-
-    mostrarLista[Exibir visitantes]
-
-    selecionarVisitante[Solicitar CPF do visitante a alterar]
-
-    pegarNovosDados[Solicitar novos dados do visitante]
-
-    verificarCpfAlteracao{Novo CPF é diferente e já existe?}
-
-    atualizarVisitante[Atualizar visitante no DAO]
-
-    excluirVisitante[Remover visitante do DAO]
-
-    fim([Fim do fluxo])
-
-
+    %% =======================
+    %% FLUXO PRINCIPAL
+    %% =======================
 
     start --> abrirMenu --> escolherAcao
 
-    escolherAcao --> incluir: [Incluir]
-
+    escolherAcao -->|Incluir| incluir
     escolherAcao -->|Listar| listar
-
     escolherAcao -->|Alterar| alterar
-
     escolherAcao -->|Remover| remover
+    escolherAcao -->|Retornar| fim
 
-    escolherAcao -->|Retornar| retornar
-
-
+    %% =======================
+    %% INCLUIR
+    %% =======================
 
     incluir --> inicioValidar --> verificarCpfExistente
 
-    verificarCpfExistente --> mostrarErro: [Sim]
+    verificarCpfExistente -->|[Sim]| mostrarErro
+    verificarCpfExistente -->|[Não]| buscarMorador
 
-    verificarCpfExistente --> buscarMorador: [Não]
+    buscarMorador --> daoBuscarMorador --> moradorExiste
 
-    buscarMorador --> moradorExiste
+    moradorExiste -->|[Não]| mostrarErro
+    moradorExiste -->|[Sim]| criarVisitante --> daoSalvar --> mostrarSucesso --> abrirMenu
 
-    moradorExiste -->|Não| mostrarErro
+    %% =======================
+    %% LISTAR
+    %% =======================
 
-    moradorExiste -->|Sim| criarVisitante --> mostrarSucesso --> abrirMenu
+    listar --> listarDados --> daoListar --> listaVazia
 
+    listaVazia -->|[Sim]| mostrarErro
+    listaVazia -->|[Não]| mostrarLista --> abrirMenu
 
+    %% =======================
+    %% ALTERAR
+    %% =======================
 
-    listar --> listarDados --> listaVazia
+    alterar --> listarDados --> selecionarVisitante --> pegarNovosDados --> inicioValidar --> verificarCpfAlteracao
 
-    listaVazia -->|Sim| mostrarErro
+    verificarCpfAlteracao -->|[Sim]| mostrarErro
+    verificarCpfAlteracao -->|[Não]| buscarMorador
 
-    listaVazia -->|Não| mostrarLista --> abrirMenu
+    buscarMorador --> daoBuscarMorador --> moradorExiste
 
+    moradorExiste -->|[Não]| mostrarErro
+    moradorExiste -->|[Sim]| atualizarVisitante --> daoAtualizar --> mostrarSucesso --> abrirMenu
 
+    %% =======================
+    %% REMOVER
+    %% =======================
 
-    alterar --> listarDados --> selecionarVisitante --> pegarNovosDados --> inicioValidar
+    remover --> listarDados --> selecionarVisitante --> excluirVisitante --> daoExcluir --> mostrarSucesso --> abrirMenu
 
-    inicioValidar --> verificarCpfAlteracao
-
-    verificarCpfAlteracao -->|Sim| mostrarErro
-
-    verificarCpfAlteracao -->|Não| buscarMorador
-
-    buscarMorador --> moradorExiste
-
-    moradorExiste -->|Não| mostrarErro
-
-    moradorExiste -->|Sim| atualizarVisitante --> mostrarSucesso --> abrirMenu
-
-
-
-    remover --> listarDados --> selecionarVisitante --> excluirVisitante --> mostrarSucesso --> abrirMenu
-
-    retornar --> fim
-
-
+    %% =======================
+    %% ERRO VOLTA MENU
+    %% =======================
 
     mostrarErro --> abrirMenu
-
-``` 
-
