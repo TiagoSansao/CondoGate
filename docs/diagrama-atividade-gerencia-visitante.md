@@ -9,7 +9,7 @@ flowchart TB
 
     subgraph Usuario[Visitante / Usuário]
         escolherAcao{Selecionar ação}
-        selecionarVisitante[Selecionar visitante (CPF)]
+        selecionarVisitante["Selecionar visitante (CPF)"]
         pegarNovosDados[Informar novos dados]
     
         selecionarVisitante --> pegarNovosDados
@@ -59,11 +59,11 @@ flowchart TB
 
     start --> abrirMenu --> escolherAcao
 
-    escolherAcao -->|Incluir| incluir
-    escolherAcao -->|Listar| listar
-    escolherAcao -->|Alterar| alterar
-    escolherAcao -->|Remover| remover
-    escolherAcao -->|Retornar| fim
+    escolherAcao -->|"[Incluir]"| incluir
+    escolherAcao -->|"[Listar]"| listar
+    escolherAcao -->|"[Alterar]"| alterar
+    escolherAcao -->|"[Remover]"| remover
+    escolherAcao -->|"[Retornar]"| fim
 
     %% =======================
     %% INCLUIR
@@ -71,13 +71,13 @@ flowchart TB
 
     incluir --> inicioValidar --> verificarCpfExistente
 
-    verificarCpfExistente -->|[Sim]| mostrarErro
-    verificarCpfExistente -->|[Não]| buscarMorador
+    verificarCpfExistente -->|"[Sim]"| mostrarErro
+    verificarCpfExistente -->|"[Não]"| buscarMorador
 
     buscarMorador --> daoBuscarMorador --> moradorExiste
 
-    moradorExiste -->|[Não]| mostrarErro
-    moradorExiste -->|[Sim]| criarVisitante --> daoSalvar --> mostrarSucesso --> abrirMenu
+    moradorExiste -->|"[Não]"| mostrarErro
+    moradorExiste -->|"[Sim]"| criarVisitante --> daoSalvar --> mostrarSucesso --> abrirMenu
 
     %% =======================
     %% LISTAR
@@ -85,8 +85,8 @@ flowchart TB
 
     listar --> listarDados --> daoListar --> listaVazia
 
-    listaVazia -->|[Sim]| mostrarErro
-    listaVazia -->|[Não]| mostrarLista --> abrirMenu
+    listaVazia -->|"[Sim]"| mostrarErro
+    listaVazia -->|"[Não]"| mostrarLista --> abrirMenu
 
     %% =======================
     %% ALTERAR
@@ -94,13 +94,13 @@ flowchart TB
 
     alterar --> listarDados --> selecionarVisitante --> pegarNovosDados --> inicioValidar --> verificarCpfAlteracao
 
-    verificarCpfAlteracao -->|[Sim]| mostrarErro
-    verificarCpfAlteracao -->|[Não]| buscarMorador
+    verificarCpfAlteracao -->|"[Sim]"| mostrarErro
+    verificarCpfAlteracao -->|"[Não]"| buscarMorador
 
     buscarMorador --> daoBuscarMorador --> moradorExiste
 
-    moradorExiste -->|[Não]| mostrarErro
-    moradorExiste -->|[Sim]| atualizarVisitante --> daoAtualizar --> mostrarSucesso --> abrirMenu
+    moradorExiste -->|"[Não]"| mostrarErro
+    moradorExiste -->|"[Sim]"| atualizarVisitante --> daoAtualizar --> mostrarSucesso --> abrirMenu
 
     %% =======================
     %% REMOVER
