@@ -5,6 +5,7 @@ from controle.controle_espaco import ControladorEspaco
 from controle.controle_visita import ControladorVisita
 from controle.controle_visitante import ControladorVisitante
 from controle.agendador_visitas import AgendadorVisitas
+from controle.controle_painel import ControladorPainel
 from limite.tela_sistema import TelaSistema
 from queue import Empty, Queue
 
@@ -20,6 +21,7 @@ class ControladorSistema():
         self.__controlador_espaco = ControladorEspaco(self)
         self.__controlador_reserva = ControladorReserva(self)
         self.__controlador_visitante = ControladorVisitante(self)
+        self.__controlador_painel = ControladorPainel(self)
         self.__fila_notificacoes_visitas = Queue()
         self.__agendador_visitas = AgendadorVisitas(
             self.__controlador_visita.listar_visitas_excedidas,
@@ -54,6 +56,10 @@ class ControladorSistema():
     @property
     def controlador_visitante(self):
         return self.__controlador_visitante
+
+    @property
+    def controlador_painel(self):
+        return self.__controlador_painel
 
     def inicializar_sistema(self):
         self.__agendador_visitas.iniciar()
@@ -92,6 +98,30 @@ class ControladorSistema():
     def abre_tela_visitante(self):
         self.controlador_visitante.abre_tela()
 
+    def abre_tela_painel(self):
+        self.controlador_painel.abre_tela()
+
+    def abre_tela_gerenciamento(self):
+        while True:
+            opcao_selecionada = self.__tela_sistema.tela_opcoes_gerenciamento(
+                on_idle=self.__processar_notificacoes_pendentes
+            )
+            self.__processar_notificacoes_pendentes()
+
+            if int(opcao_selecionada) == 0:
+                return
+
+            lista_opcoes = {
+                1: self.abre_tela_morador,
+                2: self.abre_tela_visitante,
+                3: self.abre_tela_vaga,
+                4: self.abre_tela_espaco,
+            }
+
+            funcao_selecionada = lista_opcoes.get(int(opcao_selecionada))
+            if funcao_selecionada:
+                funcao_selecionada()
+
     def encerrar_sistema(self):
         self.__agendador_visitas.parar()
         exit(0)
@@ -99,12 +129,10 @@ class ControladorSistema():
     def abre_tela(self):
         lista_opcoes = {
             1: self.abre_tela_visita,
-            2: self.abre_tela_morador,
-            3: self.abre_tela_visitante,
-            4: self.abre_tela_vaga,
-            5: self.abre_tela_espaco,
-            6: self.abre_tela_reserva,
-            7: self.abre_tela_notificacao,
+            2: self.abre_tela_painel,
+            3: self.abre_tela_gerenciamento,
+            4: self.abre_tela_reserva,
+            5: self.abre_tela_notificacao,
             0: self.encerrar_sistema
         }
 
@@ -113,5 +141,6 @@ class ControladorSistema():
                 on_idle=self.__processar_notificacoes_pendentes
             )
             self.__processar_notificacoes_pendentes()
-            funcao_selecionada = lista_opcoes[int(opcao_selecionada)]
-            funcao_selecionada()
+            funcao_selecionada = lista_opcoes.get(int(opcao_selecionada))
+            if funcao_selecionada:
+                funcao_selecionada()

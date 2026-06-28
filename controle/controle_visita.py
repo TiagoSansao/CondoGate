@@ -111,6 +111,10 @@ class ControladorVisita:
             'sucesso'
         )
 
+    def listar_visitas_ativas(self):
+        visitas = self.__visita_dao.get_all()
+        return [visita for visita in visitas if visita.status == StatusVisita.ATIVA]
+
     def listar_visitas_excedidas(self):
         visitas = self.__visita_dao.get_all()
         agora = datetime.now()
