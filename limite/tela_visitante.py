@@ -28,15 +28,18 @@ class TelaVisitante(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento de Visitantes', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Incluir Visitante')],
-                  [sg.Button('Listar Visitantes')],
-                  [sg.Button('Alterar Visitante')],
-                  [sg.Button('Remover Visitante')],
-                  [sg.Button('Retornar')]]
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Gerenciamento de Visitantes', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Incluir Visitante',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Listar Visitantes',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Alterar Visitante',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Remover Visitante',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Retornar',           size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
 
     def pega_dados_visitante(self):

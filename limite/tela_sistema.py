@@ -14,7 +14,7 @@ class TelaSistema(AbstractTela):
             'Registrar Entrada/saída': 1,
             'Painel de Controle': 2,
             'Gerenciamento Geral': 3,
-            'Gerenciar Reservas': 4,
+            'Sistema de Reservas': 4,
             'Notificar Tempo Excedido': 5,
             'Finalizar Sistema': 0,
             None: 0,
@@ -65,25 +65,33 @@ class TelaSistema(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Bem vindo ao CondoGate', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Registrar Entrada/saída')], # 1
-                  [sg.Button('Painel de Controle')], # 2
-                  [sg.Button('Gerenciamento Geral')], # 3
-                  [sg.Button('Gerenciar Reservas')], # 4
-                  [sg.Button('Notificar Tempo Excedido')], # 5
-                  [sg.Button('Finalizar Sistema')]] # 0
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('🏢 CondoGate', font=("Helvetica", 28, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Registrar Entrada/saída', size=(28, 2), font=("Helvetica", 13, 'bold'),
+                       button_color=('#ffffff', '#1a6fc4'), pad=(5, 6))],
+            [sg.Button('Painel de Controle',      size=(28, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Gerenciamento Geral',      size=(28, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Sistema de Reservas',      size=(28, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Notificar Tempo Excedido', size=(28, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Finalizar Sistema',        size=(28, 1), font=("Helvetica", 11),
+                       button_color=('#ffffff', '#8b0000'), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
     def init_opcoes_gerenciamento(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento Geral', font=("Helvetica", 25))],
-                  [sg.Text('Selecione o módulo desejado', font=("Helvica", 15))],
-                  [sg.Button('Gerenciar Moradores')], # 1
-                  [sg.Button('Gerenciar Visitantes')], # 2
-                  [sg.Button('Gerenciar Vagas')], # 3
-                  [sg.Button('Gerenciar Espaços')], # 4
-                  [sg.Button('Voltar')]] # 0
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Gerenciamento Geral', font=("Helvetica", 24, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione o módulo desejado', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Gerenciar Moradores',  size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Gerenciar Visitantes', size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Gerenciar Vagas',      size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Gerenciar Espaços',    size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Voltar',               size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))

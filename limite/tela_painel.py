@@ -16,6 +16,7 @@ class TelaPainel(AbstractTela):
         opcoes = {
             'Painel de Visitas': 1,
             'Painel de Vagas': 2,
+            'Relatório de Visitas': 3,
             'Retornar': 0,
             None: 0
         }
@@ -26,13 +27,17 @@ class TelaPainel(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento de moradores', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Painel de Visitas')],
-                  [sg.Button('Painel de Vagas')],
-                  [sg.Button('Retornar')]]
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Painel de Controle', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Painel de Visitas',    size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Painel de Vagas',      size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Relatório de Visitas', size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Retornar',             size=(26, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
     def close(self):
         self.__window.Close()

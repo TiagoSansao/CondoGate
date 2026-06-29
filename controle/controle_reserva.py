@@ -97,7 +97,7 @@ class ControladorReserva:
             3: self.cancelar,
             0: self.retornar
         }
-
+        
         while True:
             opcao_selecionada = self.__tela_reserva.tela_opcoes()
             lista_opcoes[int(opcao_selecionada)]()

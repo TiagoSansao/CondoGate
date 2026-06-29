@@ -1,4 +1,3 @@
-from excecoes.lista_vazia_exception import ListaVaziaException
 from limite.tela_painel import TelaPainel
 from limite.tela_visita import TelaVisita
 
@@ -24,6 +23,9 @@ class ControladorPainel:
         visitas_ativas = self.__controlador_sistema.controlador_visita.listar_visitas_ativas()
         self.__tela_visita.mostrar_visitas(visitas_ativas)
 
+    def relatorio_visitas(self):
+        self.__controlador_sistema.controlador_visita.gerar_relatorio_visitas()
+
     def vagas (self):
         self.__controlador_sistema.controlador_vaga.listar()
 
@@ -34,6 +36,7 @@ class ControladorPainel:
         lista_opcoes = {
             1: self.visitas,
             2: self.vagas,
+            3: self.relatorio_visitas,
             0: self.retornar
         }
         while True:

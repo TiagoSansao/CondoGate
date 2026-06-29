@@ -15,15 +15,19 @@ class TelaVisita(AbstractTela):
 
     def pega_dados_visita(self):
         sg.theme(self.ESTILO_JANELA)
-        
         layout = [
-            [sg.Text('Registrar Visita', font=("Helvetica", 20))],
-            [sg.Text('CPF (visitante):'), sg.InputText(key='cpf', size=(25, 1))],
-            [sg.Text('Vaga (opcional):'), sg.InputText(key='vaga', size=(25, 1))],
-            [sg.Button('OK'), sg.Button('Registrar Visitante'), sg.Button('Cancelar')]
+            [sg.Text('Registrar Visita', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Text('CPF (visitante):', size=(18, 1), font=("Helvetica", 11)),
+             sg.InputText(key='cpf', size=(25, 1), font=("Helvetica", 11))],
+            [sg.Text('Vaga (opcional):', size=(18, 1), font=("Helvetica", 11)),
+             sg.InputText(key='vaga', size=(25, 1), font=("Helvetica", 11))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('OK', size=(14, 1), font=("Helvetica", 11), pad=(5, 3)),
+             sg.Button('Registrar Visitante', size=(20, 1), font=("Helvetica", 11), pad=(5, 3)),
+             sg.Button('Cancelar', size=(14, 1), font=("Helvetica", 11), pad=(5, 3))],
         ]
-
-        self.__window = sg.Window('Portaria').Layout(layout)
+        self.__window = sg.Window('Portaria', layout, element_justification='center', margins=(30, 20))
         button, values = self.__window.Read()
         self.close()
 
@@ -103,6 +107,46 @@ class TelaVisita(AbstractTela):
                           title='-------- Listagem de Visitas Ativas ----------',
                           font=("Helvetica", 12),
                           size=(60, 20))
+
+    def mostrar_relatorio_visitas(self, lista_dados):
+        string_lista = ""
+
+        for dados in lista_dados or []:
+            nome = dados.get('nome', 'Não informado')
+            cpf = dados.get('cpf', 'Não informado')
+            entrada = dados.get('entrada')
+            status = dados.get('status', 'Não informado')
+            saida = dados.get('saida')
+
+            if entrada is None:
+                data_entrada = 'Não informado'
+                hora_entrada = 'Não informado'
+            else:
+                data_entrada = entrada.strftime('%d/%m/%Y')
+                hora_entrada = entrada.strftime('%H:%M:%S')
+
+            if saida is None:
+                saida_texto = 'Ainda não saiu'
+            else:
+                saida_texto = saida.strftime('%d/%m/%Y %H:%M:%S')
+
+            string_lista += (
+                f"Nome: {nome}\n"
+                f"CPF: {cpf}\n"
+                f"Data de entrada: {data_entrada}\n"
+                f"Hora de entrada: {hora_entrada}\n"
+                f"Status: {status}\n"
+                f"Saída: {saida_texto}\n"
+                "----------------------------------------\n"
+            )
+
+        if not string_lista:
+            string_lista = "Nenhuma visita registrada no momento."
+
+        sg.popup_scrolled(string_lista,
+                          title='Relatório de Visitas',
+                          font=("Helvetica", 12),
+                          size=(80, 25))
 
     def pega_tempo_limite(self, tempo_atual=10):
         sg.theme(self.ESTILO_JANELA)

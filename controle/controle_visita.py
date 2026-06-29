@@ -2,6 +2,7 @@ from excecoes.nao_encontrado_exception import NaoEncontradoException
 from entidades.visita import Visita, StatusVisita
 from limite.tela_visita import TelaVisita
 from persistence.visita_dao import VisitaDAO
+from persistence.relatorio_dao import RelatorioDAO
 from datetime import datetime
 import pickle
 
@@ -14,6 +15,7 @@ class ControladorVisita:
         self.__controlador_sistema = controlador_sistema
         self.__tela_visita = TelaVisita()
         self.__visita_dao = VisitaDAO()
+        self.__relatorio_dao = RelatorioDAO()
         self.__tempo_limite_minutos = self.__carregar_tempo_limite()
 
     @property
@@ -49,6 +51,7 @@ class ControladorVisita:
                 visita_ativa.registrar_saida()
                 
                 self.__visita_dao.update(visita_ativa)
+                self.__relatorio_dao.update(visita_ativa)
                 
                 if visita_ativa.vaga:
                     self.__controlador_sistema.controlador_vaga.vaga_dao.update(visita_ativa.vaga)
@@ -74,7 +77,7 @@ class ControladorVisita:
 
                 nova_visita = Visita(visitante, datetime.now(), vaga_obj)
                 self.__visita_dao.add(nova_visita)
-                
+                self.__relatorio_dao.add(nova_visita)
                 self.__tela_visita.mostra_mensagem('Entrada registrada com sucesso!', 'sucesso')
 
         except NaoEncontradoException as e:
@@ -132,6 +135,21 @@ class ControladorVisita:
                     })
 
         return visitas_excedidas
+
+    def gerar_relatorio_visitas(self):
+        visitas = self.__relatorio_dao.get_all()
+        relatorio = []
+
+        for visita in visitas:
+            relatorio.append({
+                'nome': visita.visitante.nome,
+                'cpf': visita.visitante.cpf,
+                'entrada': visita.entrada,
+                'status': 'Em andamento' if visita.status == StatusVisita.ATIVA else 'Finalizada',
+                'saida': visita.saida
+            })
+
+        self.__tela_visita.mostrar_relatorio_visitas(relatorio)
 
     def notificar_visitas_excedidas(self, visitas_excedidas):
         if visitas_excedidas:

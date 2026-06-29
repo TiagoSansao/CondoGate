@@ -27,14 +27,17 @@ class TelaEspaco(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento de espacos', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opcao desejada', font=("Helvica", 15))],
-                  [sg.Button('Incluir Espaco')],
-                  [sg.Button('Listar Espacos')],
-                  [sg.Button('Remover Espaco')],
-                  [sg.Button('Retornar')]]
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Gerenciamento de Espaços', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Incluir Espaco',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Listar Espacos',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Remover Espaco',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Retornar',        size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
     def pega_nome(self):
         sg.theme(self.ESTILO_JANELA)

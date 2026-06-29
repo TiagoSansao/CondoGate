@@ -27,14 +27,17 @@ class TelaVaga(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento de vagas', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Incluir Vaga')],
-                  [sg.Button('Listar Vagas')],
-                  [sg.Button('Remover Vaga')],
-                  [sg.Button('Retornar')]]
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Gerenciamento de Vagas', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Incluir Vaga',  size=(22, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Listar Vagas',  size=(22, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Remover Vaga',  size=(22, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Retornar',      size=(22, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
     def pega_id(self):
         sg.theme(self.ESTILO_JANELA)
@@ -73,7 +76,7 @@ class TelaVaga(AbstractTela):
     def mostrar(self, dados):
         string_dados = ""
         string_dados += "Id da vaga: " + str(dados["id"]) + "\n"
-        string_dados += "Status da vaga: " + str(dados["status"]) + "\n"
+        string_dados += "Status da vaga: " + ("Ocupada" if dados["status"] else "Disponível") + "\n"
         return string_dados
 
     def mostrar_vagas(self, lista_dados):

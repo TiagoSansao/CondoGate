@@ -28,15 +28,18 @@ class TelaMorador(AbstractTela):
 
     def init_opcoes(self):
         sg.theme(self.ESTILO_JANELA)
-        layout = [[sg.Text('Gerenciamento de moradores', font=("Helvetica", 25))],
-                  [sg.Text('Selecione a opção desejada', font=("Helvica", 15))],
-                  [sg.Button('Incluir Morador')],
-                  [sg.Button('Alterar Morador')],
-                  [sg.Button('Listar Moradores')],
-                  [sg.Button('Remover Morador')],
-                  [sg.Button('Retornar')]]
-
-        self.__window = sg.Window(self.TITULO_BASE).Layout(layout)
+        layout = [
+            [sg.Text('Gerenciamento de Moradores', font=("Helvetica", 22, 'bold'), justification='center', expand_x=True, pad=(0, 10))],
+            [sg.Text('Selecione a opção desejada', font=("Helvetica", 12), justification='center', expand_x=True, text_color='#aaaaaa', pad=(0, 5))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Incluir Morador',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Alterar Morador',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Listar Moradores', size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.Button('Remover Morador',  size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+            [sg.HorizontalSeparator(pad=(0, 8))],
+            [sg.Button('Retornar',         size=(24, 1), font=("Helvetica", 11), pad=(5, 3))],
+        ]
+        self.__window = sg.Window(self.TITULO_BASE, layout, element_justification='center', margins=(30, 20))
 
     def pega_dados_morador(self):
         schema = {
